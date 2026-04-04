@@ -49,7 +49,7 @@ function WishCard({ wish, onDelete }) {
           onClick={() => onDelete(wish.id)}
           className="flex-1 py-2.5 text-[12px] font-medium text-red-400 hover:bg-red-50 transition-colors"
         >
-          Delete
+          Delete test
         </button>
       </div>
     </div>
