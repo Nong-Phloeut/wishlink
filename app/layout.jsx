@@ -3,6 +3,7 @@ import { Toaster } from 'react-hot-toast'
 
 export const metadata = {
   title: 'WishLink — Send wishes via QR',
+  viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
   description: 'Create personalised QR wishes for birthdays, anniversaries, weddings and more.',
 }
 

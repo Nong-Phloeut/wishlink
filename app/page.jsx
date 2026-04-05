@@ -6,9 +6,6 @@ import RevealCard from '@/components/RevealCard'
 import BottomNav from '@/components/BottomNav'
 import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
@@ -30,6 +27,7 @@ export default function CreatePage() {
   const [videoPreview, setVideoPreview] = useState(null)
   const [uploadProgress, setUploadProgress] = useState('')
   const [step, setStep] = useState(1)
+  const [errors, setErrors] = useState({})
   const resultRef = useRef(null)
   const imageInputRef = useRef(null)
   const videoInputRef = useRef(null)
@@ -66,10 +64,21 @@ export default function CreatePage() {
     return data.publicUrl
   }
 
+  const validateStep1 = () => {
+    const newErrors = {}
+    if (!recipient.trim()) newErrors.recipient = 'Required'
+    if (!message.trim()) newErrors.message = 'Required'
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
+  const goToStep2 = () => {
+    if (validateStep1()) setStep(2)
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!recipient.trim()) { toast.error('Please enter a recipient name'); return }
-    if (!message.trim()) { toast.error('Please write a message'); return }
+    if (!validateStep1()) { setStep(1); return }
     setLoading(true)
     try {
       let image_urls = []
@@ -119,34 +128,44 @@ export default function CreatePage() {
     setWish(null); setQrSrc(null); setShowPreview(false)
     setRecipient(''); setMessage(''); setFromName(''); setDate('')
     setOccasion('birthday'); setImageFiles([]); setImagePreviews([])
-    setVideoFile(null); setVideoPreview(null); setStep(1)
+    setVideoFile(null); setVideoPreview(null); setStep(1); setErrors({})
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  // Shared input class — 16px font prevents iOS zoom
+  const inputClass = cn(
+    'w-full px-3 py-2.5 rounded-xl border bg-stone-50 text-stone-800 placeholder-stone-300',
+    'outline-none transition-colors focus:border-[#1D9E75] focus:ring-0',
+    'text-[16px] leading-normal' // 16px is critical — prevents iOS zoom
+  )
+
+  const errorInputClass = 'border-red-300 focus:border-red-400 bg-red-50/30'
+
   return (
     <div className="min-h-screen bg-stone-50">
-      <div className="max-w-[480px] mx-auto px-4 pb-32">
+      {/* Prevent zoom globally via meta — add this to layout.jsx if not there */}
+      <div className="max-w-[430px] mx-auto px-4 pb-32">
 
         {/* Header */}
-        <div className="pt-10 pb-7">
+        <div className="pt-8 pb-5">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold tracking-tight text-stone-900">
+              <h1 className="text-xl font-bold tracking-tight text-stone-900">
                 Wish<span className="text-[#1D9E75]">Link</span>
               </h1>
-              <p className="text-[12px] text-stone-400 mt-0.5">Create & share beautiful wishes</p>
+              <p className="text-[11px] text-stone-400 mt-0.5">Create & share beautiful wishes</p>
             </div>
-            <div className="w-10 h-10 rounded-2xl bg-[#1D9E75]/10 flex items-center justify-center text-xl">
+            <div className="w-9 h-9 rounded-xl bg-[#1D9E75]/10 flex items-center justify-center text-lg">
               🎁
             </div>
           </div>
         </div>
 
         {!wish ? (
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3">
 
-            {/* Step pills */}
-            <div className="flex items-center gap-2 mb-2">
+            {/* Step indicator */}
+            <div className="flex items-center gap-2 mb-1">
               {['Details', 'Media'].map((label, i) => {
                 const s = i + 1
                 const active = step === s
@@ -155,16 +174,16 @@ export default function CreatePage() {
                   <button
                     key={s}
                     type="button"
-                    onClick={() => setStep(s)}
+                    onClick={() => s === 2 ? goToStep2() : setStep(s)}
                     className={cn(
-                      'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold transition-all border',
-                      active ? 'bg-[#1D9E75] text-white border-[#1D9E75] shadow-sm' :
+                      'flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold transition-all border',
+                      active ? 'bg-[#1D9E75] text-white border-[#1D9E75]' :
                       done ? 'bg-[#F0FDF8] text-[#1D9E75] border-[#A7F3D0]' :
                       'bg-white text-stone-400 border-stone-200'
                     )}
                   >
                     <span className={cn(
-                      'w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold',
+                      'w-3.5 h-3.5 rounded-full flex items-center justify-center text-[8px] font-bold',
                       active ? 'bg-white/20 text-white' : done ? 'bg-[#1D9E75] text-white' : 'bg-stone-100 text-stone-400'
                     )}>
                       {done ? '✓' : s}
@@ -173,43 +192,44 @@ export default function CreatePage() {
                   </button>
                 )
               })}
-              <div className="flex-1 h-px bg-stone-200 mx-1" />
               {(imageFiles.length > 0 || videoFile) && (
-                <Badge variant="secondary" className="text-[10px] bg-[#F0FDF8] text-[#1D9E75] border-[#A7F3D0]">
-                  {imageFiles.length > 0 && `${imageFiles.length} photo${imageFiles.length > 1 ? 's' : ''}`}
-                  {imageFiles.length > 0 && videoFile && ' · '}
-                  {videoFile && 'video'}
+                <Badge className="ml-auto text-[9px] bg-[#F0FDF8] text-[#1D9E75] border border-[#A7F3D0] font-medium">
+                  {imageFiles.length > 0 && `${imageFiles.length}📷`}
+                  {videoFile && ' 🎥'}
                 </Badge>
               )}
             </div>
 
             {step === 1 && (
-              <div className="space-y-4">
+              <div className="space-y-3">
 
-                {/* Occasion card */}
+                {/* Occasion */}
                 <Card className="border-stone-200 shadow-sm">
-                  <CardContent className="pt-5 pb-4">
-                    <Label className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-3 block">
-                      Occasion
-                    </Label>
+                  <CardContent className="pt-4 pb-3">
+                    <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-3">Occasion</p>
                     <OccasionPicker value={occasion} onChange={setOccasion} />
                   </CardContent>
                 </Card>
 
-                {/* Recipient + message card */}
+                {/* Recipient */}
                 <Card className="border-stone-200 shadow-sm">
-                  <CardContent className="pt-5 space-y-4">
+                  <CardContent className="pt-4 pb-4 space-y-3">
                     <div>
-                      <Label htmlFor="recipient" className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1.5 block">
-                        Who is this for?
-                      </Label>
-                      <Input
-                        id="recipient"
+                      <div className="flex items-center justify-between mb-1.5">
+                        <label className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">
+                          Recipient name <span className="text-red-400">*</span>
+                        </label>
+                        {errors.recipient && (
+                          <span className="text-[10px] text-red-400 font-medium">{errors.recipient}</span>
+                        )}
+                      </div>
+                      <input
+                        type="text"
                         value={recipient}
-                        onChange={(e) => setRecipient(e.target.value)}
-                        placeholder="Recipient's name"
+                        onChange={(e) => { setRecipient(e.target.value); if (errors.recipient) setErrors(p => ({...p, recipient: null})) }}
+                        placeholder="e.g. Sokha, Mom, Sarah"
                         maxLength={40}
-                        className="border-stone-200 focus-visible:ring-[#1D9E75] focus-visible:border-[#1D9E75] bg-stone-50"
+                        className={cn(inputClass, 'border-stone-200', errors.recipient && errorInputClass)}
                       />
                     </div>
 
@@ -217,51 +237,54 @@ export default function CreatePage() {
 
                     <div>
                       <div className="flex items-center justify-between mb-1.5">
-                        <Label htmlFor="message" className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">
-                          Your message
-                        </Label>
-                        <span className="text-[10px] text-stone-300">{message.length}/400</span>
+                        <label className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">
+                          Message <span className="text-red-400">*</span>
+                        </label>
+                        <div className="flex items-center gap-2">
+                          {errors.message && (
+                            <span className="text-[10px] text-red-400 font-medium">{errors.message}</span>
+                          )}
+                          <span className="text-[10px] text-stone-300">{message.length}/400</span>
+                        </div>
                       </div>
-                      <Textarea
-                        id="message"
+                      <textarea
                         value={message}
-                        onChange={(e) => setMessage(e.target.value)}
+                        onChange={(e) => { setMessage(e.target.value); if (errors.message) setErrors(p => ({...p, message: null})) }}
                         placeholder="Write something heartfelt…"
                         maxLength={400}
                         rows={4}
-                        className="border-stone-200 focus-visible:ring-[#1D9E75] focus-visible:border-[#1D9E75] bg-stone-50 resize-none leading-relaxed"
+                        className={cn(inputClass, 'border-stone-200 resize-none leading-relaxed', errors.message && errorInputClass)}
                       />
                     </div>
                   </CardContent>
                 </Card>
 
-                {/* From + Date card */}
+                {/* From + Date */}
                 <Card className="border-stone-200 shadow-sm">
-                  <CardContent className="pt-5 pb-5">
-                    <div className="grid grid-cols-2 gap-4">
+                  <CardContent className="pt-4 pb-4">
+                    <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <Label htmlFor="from" className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1.5 block">
+                        <label className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1.5 block">
                           From
-                        </Label>
-                        <Input
-                          id="from"
+                        </label>
+                        <input
+                          type="text"
                           value={fromName}
                           onChange={(e) => setFromName(e.target.value)}
                           placeholder="Your name"
                           maxLength={30}
-                          className="border-stone-200 focus-visible:ring-[#1D9E75] bg-stone-50 text-[13px]"
+                          className={cn(inputClass, 'border-stone-200')}
                         />
                       </div>
                       <div>
-                        <Label htmlFor="date" className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1.5 block">
+                        <label className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1.5 block">
                           Date
-                        </Label>
-                        <Input
-                          id="date"
+                        </label>
+                        <input
                           type="date"
                           value={date}
                           onChange={(e) => setDate(e.target.value)}
-                          className="border-stone-200 focus-visible:ring-[#1D9E75] bg-stone-50 text-[13px]"
+                          className={cn(inputClass, 'border-stone-200')}
                         />
                       </div>
                     </div>
@@ -270,8 +293,8 @@ export default function CreatePage() {
 
                 <Button
                   type="button"
-                  onClick={() => setStep(2)}
-                  className="w-full h-12 rounded-2xl text-[14px] font-semibold bg-[#1D9E75] hover:bg-[#178060] shadow-lg shadow-[#1D9E75]/20 transition-all active:scale-[0.98]"
+                  onClick={goToStep2}
+                  className="w-full h-11 rounded-xl text-[14px] font-semibold bg-[#1D9E75] hover:bg-[#178060] shadow-md shadow-[#1D9E75]/20"
                 >
                   Next: Add Media →
                 </Button>
@@ -279,20 +302,18 @@ export default function CreatePage() {
             )}
 
             {step === 2 && (
-              <div className="space-y-4">
+              <div className="space-y-3">
 
-                {/* Photos card */}
+                {/* Photos */}
                 <Card className="border-stone-200 shadow-sm">
-                  <CardContent className="pt-5">
+                  <CardContent className="pt-4 pb-4">
                     <div className="flex items-center justify-between mb-3">
-                      <Label className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">
-                        Photos
-                      </Label>
+                      <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Photos</p>
                       <span className="text-[10px] text-stone-400">{imageFiles.length}/6</span>
                     </div>
 
                     {imagePreviews.length > 0 ? (
-                      <div className="grid grid-cols-3 gap-2 mb-2">
+                      <div className="grid grid-cols-3 gap-2">
                         {imagePreviews.map((src, i) => (
                           <div key={i} className="relative aspect-square rounded-xl overflow-hidden group border border-stone-100">
                             <img src={src} alt="" className="w-full h-full object-cover" />
@@ -300,10 +321,8 @@ export default function CreatePage() {
                             <button
                               type="button"
                               onClick={() => removeImage(i)}
-                              className="absolute top-1.5 right-1.5 w-6 h-6 bg-black/60 text-white rounded-full text-[12px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500"
-                            >
-                              ×
-                            </button>
+                              className="absolute top-1 right-1 w-5 h-5 bg-black/60 text-white rounded-full text-[11px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                            >×</button>
                           </div>
                         ))}
                         {imageFiles.length < 6 && (
@@ -312,8 +331,7 @@ export default function CreatePage() {
                             onClick={() => imageInputRef.current?.click()}
                             className="aspect-square rounded-xl border-2 border-dashed border-stone-200 flex flex-col items-center justify-center text-stone-300 hover:border-[#1D9E75] hover:text-[#1D9E75] transition-colors"
                           >
-                            <span className="text-2xl leading-none">+</span>
-                            <span className="text-[9px] mt-1">Add</span>
+                            <span className="text-xl">+</span>
                           </button>
                         )}
                       </div>
@@ -321,37 +339,29 @@ export default function CreatePage() {
                       <button
                         type="button"
                         onClick={() => imageInputRef.current?.click()}
-                        className="w-full border-2 border-dashed border-stone-200 rounded-xl py-8 flex flex-col items-center gap-2 text-stone-300 hover:border-[#1D9E75] hover:text-[#1D9E75] transition-all group mb-2"
+                        className="w-full border-2 border-dashed border-stone-200 rounded-xl py-6 flex flex-col items-center gap-1.5 text-stone-300 hover:border-[#1D9E75] hover:text-[#1D9E75] transition-all"
                       >
-                        <span className="text-4xl group-hover:scale-110 transition-transform">🖼️</span>
+                        <span className="text-3xl">🖼️</span>
                         <span className="text-[12px] font-medium">Tap to add photos</span>
-                        <span className="text-[10px] opacity-60">Up to 6 photos · Max 5MB each</span>
+                        <span className="text-[10px] opacity-60">Up to 6 · Max 5MB each</span>
                       </button>
                     )}
                     <input ref={imageInputRef} type="file" accept="image/*" multiple onChange={handleImagesChange} className="hidden" />
                   </CardContent>
                 </Card>
 
-                {/* Video card */}
+                {/* Video */}
                 <Card className="border-stone-200 shadow-sm">
-                  <CardContent className="pt-5 pb-5">
+                  <CardContent className="pt-4 pb-4">
                     <div className="flex items-center justify-between mb-3">
-                      <Label className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">
-                        Video message
-                      </Label>
-                      <Badge variant="outline" className="text-[9px] text-stone-400 border-stone-200">optional</Badge>
+                      <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Video message</p>
+                      <Badge variant="outline" className="text-[9px] text-stone-400 border-stone-200 font-normal">optional</Badge>
                     </div>
-
                     {videoPreview ? (
                       <div>
-                        <div className="relative rounded-xl overflow-hidden border border-stone-100">
-                          <video src={videoPreview} controls className="w-full max-h-48 bg-black" />
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => { setVideoFile(null); setVideoPreview(null) }}
-                          className="text-[11px] text-red-400 hover:text-red-600 transition-colors mt-2"
-                        >
+                        <video src={videoPreview} controls className="w-full rounded-xl max-h-44 bg-black" />
+                        <button type="button" onClick={() => { setVideoFile(null); setVideoPreview(null) }}
+                          className="text-[11px] text-red-400 hover:text-red-600 mt-2 block">
                           Remove video
                         </button>
                       </div>
@@ -359,9 +369,9 @@ export default function CreatePage() {
                       <button
                         type="button"
                         onClick={() => videoInputRef.current?.click()}
-                        className="w-full border-2 border-dashed border-stone-200 rounded-xl py-8 flex flex-col items-center gap-2 text-stone-300 hover:border-[#1D9E75] hover:text-[#1D9E75] transition-all group"
+                        className="w-full border-2 border-dashed border-stone-200 rounded-xl py-6 flex flex-col items-center gap-1.5 text-stone-300 hover:border-[#1D9E75] hover:text-[#1D9E75] transition-all"
                       >
-                        <span className="text-4xl group-hover:scale-110 transition-transform">🎥</span>
+                        <span className="text-3xl">🎥</span>
                         <span className="text-[12px] font-medium">Tap to add a video</span>
                         <span className="text-[10px] opacity-60">Max 50MB</span>
                       </button>
@@ -370,22 +380,14 @@ export default function CreatePage() {
                   </CardContent>
                 </Card>
 
-                {/* Actions */}
-                <div className="flex gap-3">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setStep(1)}
-                    className="flex-1 h-12 rounded-2xl border-stone-200 text-stone-600 hover:bg-stone-50"
-                  >
+                <div className="flex gap-2">
+                  <Button type="button" variant="outline" onClick={() => setStep(1)}
+                    className="flex-1 h-11 rounded-xl border-stone-200 text-stone-600 text-[13px]">
                     ← Back
                   </Button>
-                  <Button
-                    type="submit"
-                    disabled={loading}
-                    className="flex-[2] h-12 rounded-2xl text-[14px] font-semibold bg-[#1D9E75] hover:bg-[#178060] shadow-lg shadow-[#1D9E75]/20 transition-all active:scale-[0.98] disabled:opacity-60"
-                  >
-                    {loading ? (uploadProgress || 'Creating…') : '✨ Generate QR Code'}
+                  <Button type="submit" disabled={loading}
+                    className="flex-[2] h-11 rounded-xl text-[14px] font-semibold bg-[#1D9E75] hover:bg-[#178060] shadow-md shadow-[#1D9E75]/20 disabled:opacity-60">
+                    {loading ? (uploadProgress || 'Creating…') : '✨ Generate QR'}
                   </Button>
                 </div>
               </div>
@@ -394,72 +396,42 @@ export default function CreatePage() {
 
         ) : (
           <div ref={resultRef} className="space-y-3">
-
-            {/* Success */}
-            <div className="flex items-center gap-3 bg-[#F0FDF8] border border-[#A7F3D0] rounded-2xl px-4 py-3">
-              <span className="text-2xl">🎉</span>
+            <div className="flex items-center gap-3 bg-[#F0FDF8] border border-[#A7F3D0] rounded-xl px-4 py-3">
+              <span className="text-xl">🎉</span>
               <div>
-                <p className="text-[13px] font-semibold text-[#065F46]">Wish created successfully!</p>
-                <p className="text-[11px] text-[#059669]">Share the QR code or link with {wish.recipient}</p>
+                <p className="text-[13px] font-semibold text-[#065F46]">Wish created!</p>
+                <p className="text-[11px] text-[#059669]">Share with {wish.recipient}</p>
               </div>
             </div>
 
-            {/* QR Card */}
             <Card className="border-stone-200 shadow-sm">
-              <CardContent className="pt-6 pb-5 text-center">
-                <div className="relative w-48 h-48 mx-auto mb-5">
+              <CardContent className="pt-5 pb-5 text-center">
+                <div className="relative w-44 h-44 mx-auto mb-4">
                   <div className="w-full h-full rounded-2xl overflow-hidden border border-stone-100 shadow-md">
                     {qrSrc && <img src={qrSrc} alt="QR Code" className="w-full h-full object-cover" />}
                   </div>
-                  {/* Corner decorations */}
-                  <div className="absolute -top-1 -left-1 w-4 h-4 border-t-2 border-l-2 border-[#1D9E75] rounded-tl-md" />
-                  <div className="absolute -top-1 -right-1 w-4 h-4 border-t-2 border-r-2 border-[#1D9E75] rounded-tr-md" />
-                  <div className="absolute -bottom-1 -left-1 w-4 h-4 border-b-2 border-l-2 border-[#1D9E75] rounded-bl-md" />
-                  <div className="absolute -bottom-1 -right-1 w-4 h-4 border-b-2 border-r-2 border-[#1D9E75] rounded-br-md" />
+                  <div className="absolute -top-1 -left-1 w-4 h-4 border-t-2 border-l-2 border-[#1D9E75] rounded-tl" />
+                  <div className="absolute -top-1 -right-1 w-4 h-4 border-t-2 border-r-2 border-[#1D9E75] rounded-tr" />
+                  <div className="absolute -bottom-1 -left-1 w-4 h-4 border-b-2 border-l-2 border-[#1D9E75] rounded-bl" />
+                  <div className="absolute -bottom-1 -right-1 w-4 h-4 border-b-2 border-r-2 border-[#1D9E75] rounded-br" />
                 </div>
-
-                <p className="font-semibold text-[16px] text-stone-800 mb-1">
-                  {wish.recipient}'s {wish.occasion} wish
-                </p>
-                <p className="text-[12px] text-stone-400 mb-5">Scan with any camera to reveal</p>
-
+                <p className="font-semibold text-[15px] text-stone-800 mb-1">{wish.recipient}'s {wish.occasion} wish</p>
+                <p className="text-[11px] text-stone-400 mb-4">Scan with any camera to reveal</p>
                 <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    onClick={copyLink}
-                    className="flex-1 rounded-xl border-stone-200 text-stone-600 hover:bg-stone-50 text-[13px]"
-                  >
-                    📋 Copy link
-                  </Button>
-                  <Button
-                    onClick={shareLink}
-                    className="flex-1 rounded-xl bg-[#1D9E75] hover:bg-[#178060] text-[13px]"
-                  >
-                    🔗 Share
-                  </Button>
+                  <Button variant="outline" onClick={copyLink} className="flex-1 rounded-xl border-stone-200 text-stone-600 text-[13px]">📋 Copy</Button>
+                  <Button onClick={shareLink} className="flex-1 rounded-xl bg-[#1D9E75] hover:bg-[#178060] text-[13px]">🔗 Share</Button>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Preview */}
-            <Button
-              variant="outline"
-              onClick={() => setShowPreview((p) => !p)}
-              className="w-full rounded-xl border-stone-200 text-stone-500 hover:bg-stone-50 text-[13px]"
-            >
+            <Button variant="outline" onClick={() => setShowPreview(p => !p)}
+              className="w-full rounded-xl border-stone-200 text-stone-500 text-[13px]">
               {showPreview ? '▲ Hide preview' : '👁 Preview reveal card'}
             </Button>
 
-            {showPreview && (
-              <div className="rounded-2xl overflow-hidden">
-                <RevealCard wish={wish} compact />
-              </div>
-            )}
+            {showPreview && <RevealCard wish={wish} compact />}
 
-            <button
-              onClick={reset}
-              className="w-full py-2 text-[12px] text-stone-400 hover:text-stone-600 transition-colors"
-            >
+            <button onClick={reset} className="w-full py-2 text-[12px] text-stone-400 hover:text-stone-600 transition-colors">
               ← Create another wish
             </button>
           </div>
