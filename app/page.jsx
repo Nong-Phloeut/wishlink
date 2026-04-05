@@ -4,6 +4,7 @@ import toast from 'react-hot-toast'
 import OccasionPicker from '@/components/OccasionPicker'
 import RevealCard from '@/components/RevealCard'
 import BottomNav from '@/components/BottomNav'
+import SaveWishPrompt from '@/components/SaveWishPrompt'
 import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -98,6 +99,18 @@ export default function CreatePage() {
         body: JSON.stringify({ occasion, recipient: recipient.trim(), message: message.trim(), from_name: fromName.trim(), date, image_urls: image_urls.length > 0 ? image_urls : null, video_url }),
       })
       const data = await res.json()
+
+      const stored = JSON.parse(localStorage.getItem('my_wishes') || '[]')
+      stored.unshift({
+        id: data.wish.id,
+        owner_token: data.owner_token,
+        occasion: data.wish.occasion,
+        recipient: data.wish.recipient,
+        message: data.wish.message,
+        created_at: data.wish.created_at,
+      })
+      localStorage.setItem('my_wishes', JSON.stringify(stored.slice(0, 50)))
+
       if (!res.ok) throw new Error(data.error)
       const wishUrl = `${window.location.origin}/v/${data.wish.id}`
       const qrRes = await fetch(`/api/qr?url=${encodeURIComponent(wishUrl)}`)
@@ -408,6 +421,7 @@ export default function CreatePage() {
                 <p className="text-[11px] text-[#059669]">Share with {wish.recipient}</p>
               </div>
             </div>
+            {/* <SaveWishPrompt wish={wish} /> */}
 
             <Card className="border-stone-200 shadow-sm">
               <CardContent className="pt-5 pb-5 text-center">
