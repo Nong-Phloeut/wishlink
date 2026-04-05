@@ -1,29 +1,22 @@
 'use client'
+
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { motion } from 'framer-motion'
+import { PlusSquare, ClipboardList } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { buttonVariants } from '@/components/ui/button'
 
 const tabs = [
   {
     href: '/',
     label: 'Create',
-    icon: ({ active }) => (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill={active ? '#1D9E75' : 'none'} stroke={active ? '#1D9E75' : '#9CA3AF'} strokeWidth="1.8">
-        <rect x="3" y="3" width="18" height="18" rx="4" />
-        <path d="M12 8v8M8 12h8" strokeLinecap="round" />
-      </svg>
-    ),
+    icon: PlusSquare,
   },
   {
     href: '/my-wishes',
     label: 'My Wishes',
-    icon: ({ active }) => (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={active ? '#1D9E75' : '#9CA3AF'} strokeWidth="1.8">
-        <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" strokeLinecap="round" />
-        <rect x="9" y="3" width="6" height="4" rx="1" />
-        <path d="M9 12h6M9 16h4" strokeLinecap="round" />
-      </svg>
-    ),
+    icon: ClipboardList,
   },
 ]
 
@@ -31,41 +24,54 @@ export default function BottomNav() {
   const pathname = usePathname()
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 pointer-events-none">
-      <div className="max-w-[480px] mx-auto px-5 pb-6 pointer-events-auto">
-        {/* Frosted glass pill nav */}
-        <div className="flex gap-2 bg-white/80 backdrop-blur-xl rounded-2xl p-1.5 border border-gray-200/60 shadow-lg shadow-black/5">
+    <div className="fixed bottom-0 left-0 right-0 z-50 pointer-events-none pb-6 px-6">
+      <nav className="max-w-[400px] mx-auto pointer-events-auto">
+        <div className="relative flex items-center justify-around bg-white/70 backdrop-blur-md border border-slate-200/50 p-1.5 rounded-3xl shadow-xl shadow-black/5">
           {tabs.map((tab) => {
-            const active = pathname === tab.href
+            const isActive = pathname === tab.href
             const Icon = tab.icon
+
             return (
               <Link
                 key={tab.href}
                 href={tab.href}
                 className={cn(
-                  'flex-1 flex flex-col items-center gap-1 py-2.5 rounded-xl transition-all duration-200',
-                  active
-                    ? 'bg-[#F0FDF8] shadow-sm'
-                    : 'hover:bg-gray-50'
+                  "relative flex flex-col items-center justify-center flex-1 py-2 rounded-2xl transition-colors",
+                  isActive ? "text-emerald-600" : "text-slate-500 hover:text-slate-900"
                 )}
               >
-                <Icon active={active} />
-                <span
+                {/* Active Background Highlight */}
+                {isActive && (
+                  <motion.div
+                    layoutId="activeTab"
+                    className="absolute inset-0 bg-emerald-50 rounded-[1.25rem] -z-10"
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
+
+                <Icon 
                   className={cn(
-                    'text-[10px] font-semibold tracking-wide transition-colors',
-                    active ? 'text-[#1D9E75]' : 'text-gray-400'
-                  )}
-                >
+                    "w-5 h-5 mb-1 transition-transform",
+                    isActive ? "scale-110 stroke-[2.5px]" : "stroke-[2px]"
+                  )} 
+                />
+                
+                <span className="text-[10px] font-bold uppercase tracking-wider">
                   {tab.label}
                 </span>
-                {active && (
-                  <span className="absolute bottom-3 w-1 h-1 rounded-full bg-[#1D9E75]" />
+
+                {/* Little Indicator Dot */}
+                {isActive && (
+                  <motion.div 
+                    layoutId="dot"
+                    className="absolute -bottom-1 w-1 h-1 bg-emerald-500 rounded-full" 
+                  />
                 )}
               </Link>
             )
           })}
         </div>
-      </div>
+      </nav>
     </div>
   )
 }
