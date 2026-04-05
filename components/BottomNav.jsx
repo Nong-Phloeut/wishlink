@@ -6,22 +6,17 @@ import { motion } from 'framer-motion'
 import { PlusSquare, ClipboardList } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { buttonVariants } from '@/components/ui/button'
+import { useLocale } from 'next-intl'
 
-const tabs = [
-  {
-    href: '/',
-    label: 'Create',
-    icon: PlusSquare,
-  },
-  {
-    href: '/my-wishes',
-    label: 'My Wishes',
-    icon: ClipboardList,
-  },
-]
 
 export default function BottomNav() {
   const pathname = usePathname()
+  const locale = useLocale()
+
+  const tabs = [
+    { href: `/${locale}`, label: 'Create', icon: PlusSquare },
+    { href: `/${locale}/my-wishes`, label: 'My Wishes', icon: ClipboardList },
+  ]
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 pointer-events-none pb-6 px-6">
@@ -40,7 +35,6 @@ export default function BottomNav() {
                   isActive ? "text-emerald-600" : "text-slate-500 hover:text-slate-900"
                 )}
               >
-                {/* Active Background Highlight */}
                 {isActive && (
                   <motion.div
                     layoutId="activeTab"
@@ -49,22 +43,21 @@ export default function BottomNav() {
                   />
                 )}
 
-                <Icon 
+                <Icon
                   className={cn(
                     "w-5 h-5 mb-1 transition-transform",
                     isActive ? "scale-110 stroke-[2.5px]" : "stroke-[2px]"
-                  )} 
+                  )}
                 />
-                
+
                 <span className="text-[10px] font-bold uppercase tracking-wider">
                   {tab.label}
                 </span>
 
-                {/* Little Indicator Dot */}
                 {isActive && (
-                  <motion.div 
+                  <motion.div
                     layoutId="dot"
-                    className="absolute -bottom-1 w-1 h-1 bg-emerald-500 rounded-full" 
+                    className="absolute -bottom-1 w-1 h-1 bg-emerald-500 rounded-full"
                   />
                 )}
               </Link>
