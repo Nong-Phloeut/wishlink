@@ -4,7 +4,7 @@ import { nanoid } from 'nanoid'
 export async function POST(request) {
   try {
     const body = await request.json()
-    const { occasion, recipient, message, from_name, date, image_url, video_url } = body
+    const { occasion, recipient, message, from_name, date, image_urls, video_url } = body
 
     if (!recipient || !message || !occasion) {
       return Response.json({ error: 'Missing required fields' }, { status: 400 })
@@ -24,7 +24,7 @@ export async function POST(request) {
         from_name: from_name || null, 
         date: date || null, 
         scans: 0,
-        image_url: image_url || null,
+        image_urls: image_urls || null,
         video_url: video_url || null,
       }])
       .select()
