@@ -135,6 +135,10 @@ body {
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+input, textarea, select {
+  font-size: 16px !important;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

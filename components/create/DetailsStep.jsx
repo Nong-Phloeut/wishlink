@@ -113,7 +113,11 @@ export default function DetailsStep({
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
                 className={cn(inputClass, 'border-stone-200')}
-                style={{ colorScheme: 'light', minHeight: '46px' }}
+                style={{
+                    // Prevents iOS from adding extra height/padding to date inputs
+                    WebkitAppearance: 'none',
+                    minHeight: '46px'
+                }}   
               />
             </div>
           </div>

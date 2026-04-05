@@ -122,19 +122,23 @@ export default function MediaStep({
               </div>
             ) : (
               <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={couponInput}
-                  onChange={(e) => { setCouponInput(e.target.value); setCouponError('') }}
-                  onKeyDown={(e) => e.key === 'Enter' && handleApplyCoupon()}
-                  placeholder="Enter coupon code"
-                  className={[
-                    'flex-1 h-9 px-3 text-[13px] rounded-lg border outline-none transition-colors bg-white',
+               <input
+                type="text"
+                value={couponInput}
+                onChange={(e) => { setCouponInput(e.target.value); setCouponError('') }}
+                onKeyDown={(e) => e.key === 'Enter' && handleApplyCoupon()}
+                placeholder="Enter coupon code"
+                className={[
+                    'flex-1 h-9 px-3 rounded-lg border outline-none transition-colors bg-white',
                     couponError
-                      ? 'border-red-300 focus:border-red-400'
-                      : 'border-amber-200 focus:border-amber-400',
-                  ].join(' ')}
-                  autoFocus
+                    ? 'border-red-300 focus:border-red-400'
+                    : 'border-amber-200 focus:border-amber-400',
+                ].join(' ')}
+                autoFocus
+                style={{
+                    WebkitAppearance: 'none',
+                    fontSize: '16px',  // ← prevents iOS zoom on focus
+                }}
                 />
                 <button
                   type="button"
