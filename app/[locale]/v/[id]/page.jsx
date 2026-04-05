@@ -20,7 +20,7 @@ export default async function Page({ params }) {
 
   if (error || !wish) notFound()
 
-  // Background update
+  // Increment scan count in background
   supabase.from('wishes').update({ scans: (wish.scans || 0) + 1 }).eq('id', id).then()
 
   return <RevealClient wish={wish} />
