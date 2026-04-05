@@ -143,6 +143,7 @@ export default function CreatePage() {
         recipient: data.wish.recipient,
         message: data.wish.message,
         created_at: data.wish.created_at,
+        from_name: data.wish.from_name,
       })
       localStorage.setItem('my_wishes', JSON.stringify(stored.slice(0, 50)))
 
