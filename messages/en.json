@@ -29,7 +29,7 @@
     "from": "From",
     "fromPlaceholder": "Your name",
     "date": "Date",
-    "nextMedia": "Next: Add Media →",
+    "nextMedia": "Next: Add Media",
     "generateQR": "✨ Generate QR",
     "photos": "Photos",
     "photosHint": "Up to 6 · Max 5MB each",
