@@ -128,7 +128,7 @@ export default function CreatePage() {
         <h1 className="font-display text-[26px] font-semibold text-gray-900">
           Wish<span className="italic text-[#1D9E75]">Link</span>
         </h1>
-        <p className="text-[13px] text-gray-400 mt-0.5">Send wishes via QR — free forever</p>
+        <p className="text-[13px] text-gray-400 mt-0.5">Send wishes via QR</p>
       </div>
 
       {!wish ? (
