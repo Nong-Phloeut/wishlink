@@ -16,7 +16,9 @@
     "optional": "optional",
     "required": "Required",
     "loading": "Loading…",
-    "creating": "Creating…"
+    "creating": "Creating…",
+    "preview": "Preview",
+    "download":"Download"
   },
   "create": {
     "step1": "Details",
@@ -47,11 +49,11 @@
     "wishCreated": "Wish created!",
     "shareWith": "Share with {recipient}",
     "scanToReveal": "Scan with any camera to reveal",
-    "copyLink": "📋 Copy",
-    "share": "🔗 Share",
-    "previewCard": "👁 Preview reveal card",
-    "hidePreview": "▲ Hide preview",
-    "createAnother": "← Create another wish",
+    "copyLink": "Copy",
+    "share": "Share",
+    "previewCard": "Preview reveal card",
+    "hidePreview": "Hide preview",
+    "createAnother": "Create another wish",
     "recipientWish": "{recipient}'s {occasion} wish"
   },
   "myWishes": {

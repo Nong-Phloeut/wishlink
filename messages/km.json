@@ -1,9 +1,9 @@
 {
   "common": {
     "appName": "WishLink",
-    "tagline": "បង្កើត និងចែករំលែកបំណងប្រាថ្នា",
+    "tagline": "បង្កើត និងចែករំលែកជូនពរ",
     "create": "បង្កើត",
-    "myWishes": "បំណងប្រាថ្នារបស់ខ្ញុំ",
+    "myWishes": "ការជូនពររបស់ខ្ញុំ",
     "back": "ត្រឡប់",
     "save": "រក្សាទុក",
     "share": "ចែករំលែក",
@@ -16,7 +16,9 @@
     "optional": "មិនចាំបាច់",
     "required": "ចាំបាច់",
     "loading": "កំពុងផ្ទុក…",
-    "creating": "កំពុងបង្កើត…"
+    "creating": "កំពុងបង្កើត…",
+    "preview": "មើលជាមុន",
+    "download":"ទាញយក"
   },
   "create": {
     "step1": "ព័ត៌មានលម្អិត",
@@ -41,33 +43,33 @@
     "removeVideo": "លុបវីដេអូ",
     "uploadingPhotos": "កំពុងផ្ទុករូបភាព…",
     "uploadingVideo": "កំពុងផ្ទុកវីដេអូ…",
-    "creatingWish": "កំពុងបង្កើតបំណងប្រាថ្នា…"
+    "creatingWish": "កំពុងបង្កើតការជូនពរ…"
   },
   "result": {
-    "wishCreated": "បំណងប្រាថ្នាត្រូវបានបង្កើត!",
+    "wishCreated": "ការជូនពរត្រូវបានបង្កើត!",
     "shareWith": "ចែករំលែកជាមួយ {recipient}",
     "scanToReveal": "ស្កេនដោយកាមេរ៉ាណាមួយដើម្បីបង្ហាញ",
-    "copyLink": "📋 ចម្លង",
-    "share": "🔗 ចែករំលែក",
-    "previewCard": "👁 មើលមុន",
-    "hidePreview": "▲ លាក់",
-    "createAnother": "← បង្កើតបំណងប្រាថ្នាថ្មី",
-    "recipientWish": "បំណងប្រាថ្នា{occasion}របស់ {recipient}"
+    "copyLink": "ចម្លង",
+    "share": "ចែករំលែក",
+    "previewCard": "មើលមុន",
+    "hidePreview": "លាក់",
+    "createAnother": "បង្កើតការជូនពរថ្មី",
+    "recipientWish": "ជូនពរ{occasion}របស់ {recipient}"
   },
   "myWishes": {
-    "title": "បំណងប្រាថ្នារបស់ខ្ញុំ",
-    "subtitle": "បំណងប្រាថ្នា {count} នៅលើឧបករណ៍នេះ",
-    "subtitle_plural": "បំណងប្រាថ្នា {count} នៅលើឧបករណ៍នេះ",
+    "title": "ការជូនពររបស់ខ្ញុំ",
+    "subtitle": "ជូនពរ {count} នៅលើឧបករណ៍នេះ",
+    "subtitle_plural": "ជូនពរ {count} នៅលើឧបករណ៍នេះ",
     "savedOnDevice": "រក្សាទុកនៅលើឧបករណ៍នេះ",
-    "deviceWarning": "បំណងប្រាថ្នារក្សាទុកតែនៅលើឧបករណ៍នេះប៉ុណ្ណោះ។ ចូលដោយ Google ដើម្បីចូលប្រើពីគ្រប់ទីកន្លែង។",
-    "empty": "មិនទាន់មានបំណងប្រាថ្នា",
-    "emptyDesc": "បំណងប្រាថ្នាដែលអ្នកបង្កើតនឹងបង្ហាញនៅទីនេះ។",
-    "createFirst": "បង្កើតបំណងប្រាថ្នាដំបូង →",
-    "signInToSync": "ចូលដើម្បីធ្វើសមកាលកម្មបំណងប្រាថ្នារបស់អ្នក",
+    "deviceWarning": "ការជូនពររក្សាទុកតែនៅលើឧបករណ៍នេះប៉ុណ្ណោះ។ ចូលដោយ Google ដើម្បីចូលប្រើពីគ្រប់ទីកន្លែង។",
+    "empty": "មិនទាន់មានការជូនពរ",
+    "emptyDesc": "ការជូនពរដែលអ្នកបង្កើតនឹងបង្ហាញនៅទីនេះ។",
+    "createFirst": "បង្កើតការជូនពរដំបូង →",
+    "signInToSync": "ចូលដើម្បីធ្វើសមកាលកម្មការជូនពររបស់អ្នក",
     "continueGoogle": "បន្តជាមួយ Google"
   },
   "savePrompt": {
-    "title": "តាមដានបំណងប្រាថ្នានេះ",
+    "title": "តាមដានការជូនពរនេះ",
     "subtitle": "ទទួលការជូនដំណឹងនៅពេល {recipient} ស្កេន",
     "continueGoogle": "បន្តជាមួយ Google",
     "orUseEmail": "ឬប្រើអ៊ីមែលផ្សេង",
@@ -88,9 +90,9 @@
   },
   "reveal": {
     "tapToReveal": "ចុចដើម្បីបង្ហាញ",
-    "awaitingYou": "មានបំណងប្រាថ្នាពិសេសសម្រាប់អ្នក",
+    "awaitingYou": "មានការជូនពរពិសេសសម្រាប់អ្នក",
     "videoMessage": "វីដេអូសារ",
     "madeWith": "បង្កើតដោយ WishLink",
-    "createOwn": "បង្កើតបំណងប្រាថ្នារបស់អ្នក →"
+    "createOwn": "បង្កើតជូនពររបស់អ្នក →"
   }
 }
