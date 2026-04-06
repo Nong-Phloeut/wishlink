@@ -18,7 +18,7 @@
     "loading": "កំពុងផ្ទុក…",
     "creating": "កំពុងបង្កើត…",
     "preview": "មើលជាមុន",
-    "download":"ទាញយក"
+    "download": "ទាញយក"
   },
   "create": {
     "step1": "ព័ត៌មានលម្អិត",
@@ -43,7 +43,26 @@
     "removeVideo": "លុបវីដេអូ",
     "uploadingPhotos": "កំពុងផ្ទុករូបភាព…",
     "uploadingVideo": "កំពុងផ្ទុកវីដេអូ…",
-    "creatingWish": "កំពុងបង្កើតការជូនពរ…"
+    "creatingWish": "កំពុងបង្កើតការជូនពរ…",
+    "upgradeTitle": "ធ្វើឱ្យវាមិនអាចភ្លេចបាន",
+    "upgradeSubtitle": "បង្កើនប្រសិទ្ធភាពតែម្តង",
+    "upgradeOneTime": "តែម្តង",
+    "upgradeCta": "ដោះសោទាំងអស់ក្នុង $1 →",
+    "featurePhotos": "រូបថតរហូតដល់ 6",
+    "featureVideo": "សារវីដេអូ",
+    "featureQR": "QR រូបភាពគុណភាពខ្ពស់",
+    "featureSlideshow": "បង្ហាញស្លាយដោយស្វ័យប្រវត្តិ",
+    "haveCoupon": "មានកូដប័ណ្ណបញ្ចុះតម្លៃ?",
+    "couponPlaceholder": "បញ្ចូលកូដប័ណ្ណ",
+    "couponApply": "អនុវត្ត",
+    "couponApplied": "អនុវត្តកូដ — កំពុងដោះសោ…",
+    "couponEmpty": "សូមបញ្ចូលកូដ",
+    "premiumBadge": "ព្រីមៀម",
+    "premiumUnlocked": "ដោះសោព្រីមៀមរួច",
+    "premiumUnlockedDesc": "រូបថត វីដេអូ និង QR គុណភាពខ្ពស់ត្រូវបានបើក",
+    "unlockPhotos": "ដោះសោដើម្បីបន្ថែមរូបថត",
+    "unlockVideo": "ដោះសោដើម្បីបន្ថែមវីដេអូ",
+    "addMore": "បន្ថែម"
   },
   "result": {
     "wishCreated": "ការជូនពរត្រូវបានបង្កើត!",
@@ -95,5 +114,35 @@
     "madeWith": "បង្កើតដោយ WishLink",
     "footerDesc": "ឥតគិតថ្លៃ · គ្រប់គ្នាអាចស្កែន",
     "createOwn": "បង្កើតជូនពររបស់អ្នក"
+  },
+  "upgrade": {
+    "title": "បង្កើនប្រសិទ្ធភាពជូនពរ",
+    "subtitle": "ទូទាត់តែម្តង · មុខងារទាំងអស់",
+    "oneTime": "តែម្តង",
+    "featureVideo": "សារវីដេអូ",
+    "featurePhotos": "រូបថតរហូតដល់ 6",
+    "featureMusic": "តន្ត្រីផ្ទៃខាងក្រោយ",
+    "featureQR": "QR គុណភាពខ្ពស់",
+    "payAba": "បង់ដោយ ABA Pay",
+    "payAbaDesc": "ស្កែន QR នៅក្នុងកម្មវិធី ABA",
+    "secureNote": "មានសុវត្ថិភាព · តែម្តង · គ្មានការជាវ",
+    "payTitle": "បង់តាម ABA Pay",
+    "payDesc": "ផ្ញើ $1.00 USD ទៅព័ត៌មានខាងក្រោម",
+    "accountName": "ឈ្មោះគណនី",
+    "abaNumber": "លេខ ABA",
+    "amount": "ចំនួនទឹកប្រាក់",
+    "memo": "កំណត់សម្គាល់",
+    "step1": "បើកកម្មវិធី ABA",
+    "step2": "ចុច Pay → បញ្ចូលលេខ ABA",
+    "step3": "កំណត់ $1.00 ហើយបន្ថែមកំណត់សម្គាល់",
+    "step4": "ថតរូបអេក្រង់នៃការទូទាត់ជោគជ័យ",
+    "uploadProof": "ផ្ទុករូបភាពការទូទាត់",
+    "tapUpload": "ចុចដើម្បីផ្ទុករូបថត",
+    "screenshotReady": "រូបថតរួចរាល់",
+    "verifying": "កំពុងផ្ទៀងផ្ទាត់…",
+    "submitUnlock": "ដាក់ជូន & ដោះសោឥឡូវ ✓",
+    "back": "ត្រឡប់",
+    "successTitle": "ជូនពរបានដំឡើង! 🎉",
+    "successDesc": "មុខងារព្រីមៀមត្រូវបានដោះសោ។\nរូបថត និងវីដេអូរួចរាល់ហើយ។"
   }
 }

@@ -18,7 +18,7 @@
     "loading": "Loading…",
     "creating": "Creating…",
     "preview": "Preview",
-    "download":"Download"
+    "download": "Download"
   },
   "create": {
     "step1": "Details",
@@ -43,7 +43,26 @@
     "removeVideo": "Remove video",
     "uploadingPhotos": "Uploading photos…",
     "uploadingVideo": "Uploading video…",
-    "creatingWish": "Creating wish…"
+    "creatingWish": "Creating wish…",
+    "upgradeTitle": "Make it unforgettable",
+    "upgradeSubtitle": "One-time upgrade for this wish",
+    "upgradeOneTime": "one-time",
+    "upgradeCta": "Unlock everything for $1 →",
+    "featurePhotos": "Up to 6 photos",
+    "featureVideo": "Video message",
+    "featureQR": "High-res QR code",
+    "featureSlideshow": "Auto slideshow",
+    "haveCoupon": "Have a coupon code?",
+    "couponPlaceholder": "Enter coupon code",
+    "couponApply": "Apply",
+    "couponApplied": "Coupon applied — unlocking…",
+    "couponEmpty": "Please enter a code",
+    "premiumBadge": "Premium",
+    "premiumUnlocked": "Premium unlocked",
+    "premiumUnlockedDesc": "Photos, video & high-res QR are enabled",
+    "unlockPhotos": "Unlock to add photos",
+    "unlockVideo": "Unlock to add video",
+    "addMore": "Add more"
   },
   "result": {
     "wishCreated": "Wish created!",
@@ -95,5 +114,35 @@
     "madeWith": "Made with WishLink",
     "footerDesc": "Free to create · Anyone can scan",
     "createOwn": "Create your own wish"
+  },
+  "upgrade": {
+    "title": "Upgrade this wish",
+    "subtitle": "One-time · All premium features",
+    "oneTime": "one-time",
+    "featureVideo": "Video message",
+    "featurePhotos": "Up to 6 photos",
+    "featureMusic": "Background music",
+    "featureQR": "High-res QR",
+    "payAba": "Pay with ABA Pay",
+    "payAbaDesc": "Scan QR in your ABA mobile app",
+    "secureNote": "Secure · One-time only · No subscription",
+    "payTitle": "Pay via ABA Pay",
+    "payDesc": "Send exactly $1.00 USD to the details below",
+    "accountName": "Account name",
+    "abaNumber": "ABA number",
+    "amount": "Amount",
+    "memo": "Note / Memo",
+    "step1": "Open your ABA mobile app",
+    "step2": "Tap Pay → enter ABA number above",
+    "step3": "Set amount $1.00 and add the memo",
+    "step4": "Take a screenshot of the success screen",
+    "uploadProof": "Upload payment screenshot",
+    "tapUpload": "Tap to upload screenshot",
+    "screenshotReady": "Screenshot ready",
+    "verifying": "Verifying…",
+    "submitUnlock": "Submit & unlock now ✓",
+    "back": "Back",
+    "successTitle": "Wish upgraded! 🎉",
+    "successDesc": "Premium features are now unlocked.\nPhotos and video are ready to add."
   }
 }
