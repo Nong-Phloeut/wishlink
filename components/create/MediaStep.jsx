@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { ChevronLeft } from 'lucide-react' // or ArrowLeft
 import {
   Lock,
   Sparkles,
@@ -461,9 +462,13 @@ export default function MediaStep({
           type="button"
           variant="outline"
           onClick={onBack}
-          className="flex-1 h-11 rounded-xl border-stone-200 text-stone-600 text-[13px]"
+          className="group flex-1 h-12 rounded-2xl border-stone-200 text-stone-600 text-[14px] font-semibold transition-all active:scale-95 flex items-center justify-center gap-2"
         >
-          ← {tc("back")}
+          <ChevronLeft
+            size={18}
+            className="transition-transform duration-200 group-hover:-translate-x-1"
+          />
+          {tc("back")}
         </Button>
         <Button
           type="submit"

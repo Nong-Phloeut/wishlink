@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
-import { ArrowRight } from 'lucide-react' // or ChevronRight
+import { ChevronRight } from 'lucide-react'
 
 export default function DetailsStep({
   occasion, setOccasion,
@@ -131,7 +131,7 @@ export default function DetailsStep({
         className="group w-full h-12 rounded-2xl text-[15px] font-bold bg-[#1D9E75] hover:bg-[#178060] shadow-lg shadow-[#1D9E75]/20 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
       >
         {t('nextMedia')}
-        <ArrowRight 
+        <ChevronRight 
           size={18} 
           className="transition-transform duration-200 group-hover:translate-x-1" 
         />

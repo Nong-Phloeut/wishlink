@@ -182,7 +182,7 @@ export default function UpgradeModal({ wishId, onClose, onUpgraded }) {
               <button
                 onClick={handleStartPayment}
                 disabled={loading}
-                className="w-full flex items-center gap-3 bg-[#E31837] hover:bg-[#c01430] active:scale-[0.98] rounded-2xl px-4 py-3.5 transition-all disabled:opacity-60 mb-3"
+                className="w-full flex items-center gap-3 bg-[#007580] hover:bg-[#008076] active:scale-[0.98] rounded-2xl px-4 py-3.5 transition-all disabled:opacity-60 mb-3"
               >
                 <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
                   <span className="text-lg">🏦</span>
@@ -195,9 +195,7 @@ export default function UpgradeModal({ wishId, onClose, onUpgraded }) {
                 </div>
                 {loading ? (
                   <Loader2 size={16} className="animate-spin text-white" />
-                ) : (
-                  <span className="text-white font-bold">→</span>
-                )}
+                ) : null}
               </button>
 
               <p className="text-center text-[10px] text-stone-300">
