@@ -93,6 +93,7 @@
     "awaitingYou": "A special wish awaits you",
     "videoMessage": "Video message",
     "madeWith": "Made with WishLink",
-    "createOwn": "Create your own wish →"
+    "footerDesc": "Free to create · Anyone can scan",
+    "createOwn": "Create your own wish"
   }
 }

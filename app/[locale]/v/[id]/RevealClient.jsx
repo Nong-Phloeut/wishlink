@@ -3,10 +3,11 @@ import { useState, useEffect, useRef } from "react";
 import { getOccasion } from "@/lib/occasions";
 import { ChevronDown, Sparkles, Heart, Share2, Gift } from "lucide-react";
 import Link from "next/link";
-
+import { useTranslations } from 'next-intl'
 // ── Confetti burst ────────────────────────────────────────────────────────────
 function ConfettiCanvas({ trigger }) {
   const canvasRef = useRef(null);
+
 
   useEffect(() => {
     if (!trigger) return;
@@ -146,6 +147,7 @@ export default function RevealClient({ wish }) {
   const STORY_DURATION = 2800;
 
   const occ = getOccasion(wish?.occasion);
+  const t = useTranslations("reveal");
 
   const slides = [
     { text: `Someone has something for you…`, sub: null },
@@ -530,58 +532,29 @@ export default function RevealClient({ wish }) {
 
         {/* ── Gallery ── */}
         {imageList.length > 0 && (
-          <section className="py-12 px-5 max-w-md mx-auto">
+          <section className="py-12 max-w-md mx-auto px-5">
             <p className="text-[11px] font-bold uppercase tracking-widest text-stone-400 mb-5 text-center">
               Photos
             </p>
 
-            {imageList.length === 1 ? (
-              <img
-                src={imageList[0]}
-                onClick={() => setLightbox(0)}
-                className="w-full rounded-3xl shadow-xl cursor-pointer active:scale-[0.98] transition-transform"
-              />
-            ) : (
-              <>
-                {/* Main image */}
+            <div className="space-y-3">
+              {imageList.map((src, i) => (
                 <div
-                  className="w-full rounded-3xl overflow-hidden shadow-xl mb-2 cursor-pointer active:scale-[0.99] transition-transform"
-                  style={{ aspectRatio: "4/3" }}
-                  onClick={() => setLightbox(activeImg)}
+                  key={i}
+                  className="w-full overflow-hidden rounded-3xl shadow-lg cursor-pointer active:scale-[0.99] transition-transform"
+                  style={{
+                    animation: `fadeUp 0.5s ease ${i * 0.15}s both`,
+                  }}
+                  onClick={() => setLightbox(i)}
                 >
                   <img
-                    src={imageList[activeImg]}
-                    className="w-full h-full object-cover"
+                    src={src}
+                    alt={`Photo ${i + 1}`}
+                    className="w-full object-cover"
                   />
                 </div>
-
-                {/* Thumbnails */}
-                <div
-                  className="flex gap-2 overflow-x-auto pb-1"
-                  style={{ scrollbarWidth: "none" }}
-                >
-                  {imageList.map((src, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setActiveImg(i)}
-                      className="flex-shrink-0 rounded-xl overflow-hidden transition-all"
-                      style={{
-                        width: 64,
-                        height: 64,
-                        outline:
-                          i === activeImg
-                            ? `2.5px solid ${occ.accent}`
-                            : "2.5px solid transparent",
-                        outlineOffset: 2,
-                        opacity: i === activeImg ? 1 : 0.5,
-                      }}
-                    >
-                      <img src={src} className="w-full h-full object-cover" />
-                    </button>
-                  ))}
-                </div>
-              </>
-            )}
+              ))}
+            </div>
           </section>
         )}
 
@@ -602,19 +575,14 @@ export default function RevealClient({ wish }) {
         )}
 
         {/* ── Footer CTA ── */}
-        <footer className="py-20 text-center px-6">
+        <footer className="py-2 mb-12 text-center px-6">
           <div className="w-12 h-12 rounded-2xl bg-[#1D9E75]/10 flex items-center justify-center mx-auto mb-4">
             <Sparkles size={22} className="text-[#1D9E75]" />
           </div>
-          <h3 className="text-[20px] font-bold text-stone-800 mb-2">
-            Send your own wish
-          </h3>
-          <p className="text-[13px] text-stone-400 mb-6">
-            Free to create · Anyone can scan
-          </p>
+          <p className="text-[13px] text-stone-400 mb-6">{t("footerDesc")}</p>
           <Link href="/">
             <button className="px-8 py-3.5 bg-[#1D9E75] hover:bg-[#178060] text-white rounded-full font-semibold text-[15px] transition-colors shadow-lg shadow-[#1D9E75]/30">
-              Create a wish →
+              {t("createOwn")}
             </button>
           </Link>
         </footer>
@@ -666,13 +634,19 @@ export default function RevealClient({ wish }) {
       )}
 
       <style>{`
-        @keyframes breathe {
-        0%,100% { transform: scale(1);    opacity: 0.8; }
-        50%      { transform: scale(1.04); opacity: 1;   }
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(24px); }
+          to   { opacity: 1; transform: translateY(0); }
         }
+
+        @keyframes breathe {
+          0%,100% { transform: scale(1);    opacity: 0.8; }
+          50%      { transform: scale(1.04); opacity: 1;   }
+        }
+
         @keyframes dotBounce {
-        0%,100% { transform: translateY(0); }
-        50%      { transform: translateY(-3px); }
+          0%,100% { transform: translateY(0); }
+          50%      { transform: translateY(-3px); }
         }
         
         @keyframes float {
