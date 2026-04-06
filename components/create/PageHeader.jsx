@@ -14,7 +14,7 @@ export default function PageHeader() {
             🎁
           </div>
           <h1 className="text-xl font-bold tracking-tight text-stone-900">
-            Wish<span className="text-[#1D9E75]">Link</span>
+            <span className="text-[#1D9E75]">ជូនពរ</span>
           </h1>
         </div>
         <LanguageSwitcher />
