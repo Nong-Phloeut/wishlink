@@ -587,8 +587,9 @@ export default function RevealClient({ wish }) {
             </button>
           </Link>
         </footer>
+              {/* ── donation ── */}
+        <DonationCard></DonationCard>
       </main>
-<DonationCard></DonationCard>
       {/* ── Lightbox ── */}
       {lightbox !== null && (
         <div
