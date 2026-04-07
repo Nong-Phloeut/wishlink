@@ -1,17 +1,33 @@
 'use client'
-import { Heart, Coffee, Download } from 'lucide-react'
+import { Heart, Coffee, Download, Share } from 'lucide-react'
 
 export default function AdminDonation() {
   const qrCodeUrl = "/photo_2026-04-07_15-38-11.jpg" 
 
-  const handleDownload = () => {
-    // This creates a temporary link to trigger the download
-    const link = document.createElement('a')
-    link.href = qrCodeUrl
-    link.download = 'WishLink-Support-QR.jpg'
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
+  const handleSave = async () => {
+    try {
+      const response = await fetch(qrCodeUrl)
+      const blob = await response.blob()
+      const file = new File([blob], 'WishLink-QR.jpg', { type: 'image/jpeg' })
+
+      // Check if the browser (especially iOS Safari) supports sharing files
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: 'WishLink Support QR',
+          text: 'Save this QR to your photos to support WishLink!',
+        })
+      } else {
+        // Fallback for desktop or older browsers
+        const link = document.createElement('a')
+        link.href = qrCodeUrl
+        link.download = 'WishLink-Support-QR.jpg'
+        link.click()
+      }
+    } catch (error) {
+      // Final fallback: just open in new tab so they can long-press to save
+      window.open(qrCodeUrl, '_blank')
+    }
   }
 
   return (
@@ -22,12 +38,11 @@ export default function AdminDonation() {
         <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-emerald-500/10 blur-[80px]" />
         
         <div className="relative z-10 flex flex-col items-center text-center">
-          {/* Header */}
           <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-inner">
             <Coffee size={28} />
           </div>
           
-          <h3 className="text-2xl font-black tracking-tight leading-none">
+          <h3 className="text-2xl font-black tracking-tight">
             Keep WishLink Free
           </h3>
           <p className="mt-3 text-sm font-medium text-stone-400 leading-relaxed max-w-[240px]">
@@ -35,33 +50,30 @@ export default function AdminDonation() {
           </p>
 
           {/* QR Area */}
-          <div className="mt-8 rounded-[2.5rem] bg-white p-5 shadow-2xl ring-4 ring-white/5 relative group">
+          <div className="mt-8 rounded-[2.5rem] bg-white p-5 shadow-2xl ring-4 ring-white/5">
             <div className="h-64 w-64 overflow-hidden rounded-2xl bg-white">
               <img 
                 src={qrCodeUrl} 
                 alt="Support Admin QR" 
                 className="h-full w-full object-contain"
-                onError={(e) => {
-                   e.target.src = "https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=SupportWishLink"
-                }}
               />
             </div>
           </div>
 
-          {/* ── NEW: DOWNLOAD BUTTON ── */}
+          {/* ── THE "IPHONE FRIENDLY" BUTTON ── */}
           <button 
-            onClick={handleDownload}
-            className="mt-6 flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/10 rounded-2xl transition-all active:scale-95 group"
+            onClick={handleSave}
+            className="mt-6 flex items-center gap-2 px-8 py-4 bg-emerald-500 text-white rounded-2xl transition-all active:scale-95 shadow-xl shadow-emerald-500/20"
           >
-            <Download size={18} className="text-emerald-400 group-hover:translate-y-0.5 transition-transform" />
-            <span className="text-sm font-bold text-white">Save QR Code</span>
+            <Share size={18} />
+            <span className="text-sm font-black">Save to Photos</span>
           </button>
 
-          <p className="mt-4 text-[10px] font-bold text-stone-500 uppercase tracking-widest">
-            Scan or save to your gallery
+          <p className="mt-6 text-[11px] font-medium text-stone-500 leading-relaxed px-6">
+            Tip: On iPhone, click the button then select <br/> 
+            <strong className="text-stone-400">"Save Image"</strong> to put it in your gallery.
           </p>
 
-          {/* Bottom Branding */}
           <div className="mt-10 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.25em] text-emerald-500/50">
             <Heart size={12} className="fill-current" />
             Made with love by Admin
