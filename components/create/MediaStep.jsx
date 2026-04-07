@@ -15,7 +15,8 @@ import {
   Plus,
   Play,
 } from "lucide-react";
-import UpgradeModal from "@/components/UpgradeModal";
+// import UpgradeModal from "@/components/UpgradeModal";
+import CouponModal from "@/components/CouponModal";
 
 export default function MediaStep({
   imageFiles,
@@ -480,7 +481,12 @@ export default function MediaStep({
       </div>
 
       {showUpgrade && (
-        <UpgradeModal
+        // <UpgradeModal
+        //   wishId={wishId}
+        //   onClose={() => setShowUpgrade(false)}
+        //   onUpgraded={handleUpgraded}
+        // />
+        <CouponModal 
           wishId={wishId}
           onClose={() => setShowUpgrade(false)}
           onUpgraded={handleUpgraded}
