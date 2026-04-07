@@ -310,7 +310,7 @@ export default function MyWishesPage() {
             })}
 
             {/* Sign in CTA */}
-            <div className="border border-dashed border-stone-200 rounded-2xl p-5 flex flex-col items-center text-center gap-3 mt-1">
+            {/* <div className="border border-dashed border-stone-200 rounded-2xl p-5 flex flex-col items-center text-center gap-3 mt-1">
               <div className="w-9 h-9 rounded-2xl bg-stone-100 flex items-center justify-center">
                 <GoogleIcon size={16} />
               </div>
@@ -331,7 +331,7 @@ export default function MyWishesPage() {
                 <GoogleIcon size={14} />
                 {t("myWishes.continueGoogle")}
               </button>
-            </div>
+            </div> */}
           </div>
         )}
       </div>

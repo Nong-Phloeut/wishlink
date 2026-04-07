@@ -4,6 +4,7 @@ import { getOccasion } from "@/lib/occasions";
 import { ChevronDown, Sparkles, Heart, Share2, Gift } from "lucide-react";
 import Link from "next/link";
 import { useTranslations } from 'next-intl'
+import DonationCard from '@/components/DonationCard'
 // ── Confetti burst ────────────────────────────────────────────────────────────
 function ConfettiCanvas({ trigger }) {
   const canvasRef = useRef(null);
@@ -587,7 +588,7 @@ export default function RevealClient({ wish }) {
           </Link>
         </footer>
       </main>
-
+<DonationCard></DonationCard>
       {/* ── Lightbox ── */}
       {lightbox !== null && (
         <div
