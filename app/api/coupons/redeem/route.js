@@ -3,61 +3,64 @@ import { supabase } from '@/lib/supabase'
 export async function POST(request) {
   try {
     const body = await request.json()
-    const { code, wish_id } = body
+    // Support both wishId (from your component) and wish_id
+    const code = body.code
+    const wish_id = body.wishId || body.wish_id 
 
-    if (!code) {
-      return Response.json({ error: 'Missing code' }, { status: 400 })
-    }
+    if (!code) return Response.json({ error: 'Missing code' }, { status: 400 })
 
-    const { data: coupon, error } = await supabase
+    // 1. Fetch Coupon
+    const { data: coupon, error: fetchError } = await supabase
       .from('coupons')
       .select('*')
       .eq('code', code.toUpperCase().trim())
       .eq('is_active', true)
       .single()
 
-    if (error || !coupon) {
+    if (fetchError || !coupon) {
       return Response.json({ error: 'Invalid coupon code' }, { status: 404 })
     }
 
-    if (coupon.expires_at && new Date(coupon.expires_at) < new Date()) {
-      return Response.json({ error: 'This coupon has expired' }, { status: 400 })
-    }
-
+    // 2. Validate Limits
     if (coupon.max_uses !== null && coupon.used_count >= coupon.max_uses) {
-      return Response.json({ error: 'This coupon has reached its limit' }, { status: 400 })
+      return Response.json({ error: 'Coupon limit reached' }, { status: 400 })
     }
 
+    // 3. Handle Redemption (if wish_id provided)
     if (wish_id) {
+      // Check if this wish already used a coupon
       const { data: existing } = await supabase
         .from('coupon_redemptions')
         .select('id')
         .eq('wish_id', wish_id)
-        .single()
+        .maybeSingle()
 
       if (existing) {
-        return Response.json({ error: 'A coupon has already been used for this wish' }, { status: 400 })
+        return Response.json({ error: 'Coupon already used for this wish' }, { status: 400 })
       }
 
-      await supabase
-        .from('coupon_redemptions')
-        .insert([{ coupon_id: coupon.id, wish_id }])
+      // Link redemption
+      await supabase.from('coupon_redemptions').insert([{ 
+        coupon_id: coupon.id, 
+        wish_id: wish_id 
+      }])
 
-      await supabase
-        .from('wishes')
-        .update({ is_premium: true })
-        .eq('id', wish_id)
+      // Upgrade the wish
+      await supabase.from('wishes').update({ is_premium: true }).eq('id', wish_id)
     }
 
-    await supabase
+    // 4. CRITICAL: Update the count
+    const { error: updateError } = await supabase
       .from('coupons')
       .update({ used_count: coupon.used_count + 1 })
       .eq('id', coupon.id)
+
+    if (updateError) throw updateError // If RLS is blocking this, it will show in logs
 
     return Response.json({ success: true })
 
   } catch (err) {
     console.error('coupon route error:', err)
-    return Response.json({ error: err.message || 'Server error' }, { status: 500 })
+    return Response.json({ error: 'Failed to apply coupon' }, { status: 500 })
   }
 }

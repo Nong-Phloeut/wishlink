@@ -138,3 +138,9 @@ insert into public.coupons (code, description, max_uses) values
   ('WISHFREE',  'Influencer promo — 50 uses',  5),
   ('LAUNCH50',  'Launch week — 50 uses',        5),
   ('TEAMWISH',  'Internal team — unlimited',   null);
+
+
+create policy "Anyone can update used_count"
+  on public.coupons for update
+  using (is_active = true)
+  with check (true);
